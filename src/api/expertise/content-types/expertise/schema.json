@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "expertises",
+  "info": {
+    "singularName": "expertise",
+    "pluralName": "expertises",
+    "displayName": "Expertise",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "years": {
+      "type": "integer"
+    },
+    "resumee": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::resumee.resumee",
+      "inversedBy": "expertise"
+    },
+    "description": {
+      "type": "text"
+    },
+    "expertise_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::expertise-item.expertise-item",
+      "mappedBy": "expertise"
+    }
+  }
+}

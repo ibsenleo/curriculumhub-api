@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "educations",
+  "info": {
+    "singularName": "education",
+    "pluralName": "educations",
+    "displayName": "Education",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "degree": {
+      "type": "string"
+    },
+    "institution": {
+      "type": "string"
+    },
+    "start_year": {
+      "type": "date"
+    },
+    "end_year": {
+      "type": "date"
+    },
+    "resumee": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::resumee.resumee",
+      "inversedBy": "educations"
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

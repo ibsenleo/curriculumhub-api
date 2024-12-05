@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "expertise_items",
+  "info": {
+    "singularName": "expertise-item",
+    "pluralName": "expertise-items",
+    "displayName": "Expertise Item",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "customer": {
+      "type": "string"
+    },
+    "date": {
+      "type": "date"
+    },
+    "description": {
+      "type": "text"
+    },
+    "expertise": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::expertise.expertise",
+      "inversedBy": "expertise_items"
+    }
+  }
+}

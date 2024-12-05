@@ -1,0 +1,84 @@
+{
+  "kind": "collectionType",
+  "collectionName": "resumees",
+  "info": {
+    "singularName": "resumee",
+    "pluralName": "resumees",
+    "displayName": "Resumee",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "version": {
+      "type": "string"
+    },
+    "educations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::education.education",
+      "mappedBy": "resumee"
+    },
+    "author": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "resumees"
+    },
+    "bio": {
+      "type": "text"
+    },
+    "modification_date": {
+      "type": "date"
+    },
+    "experiences": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::experience.experience",
+      "mappedBy": "resumee"
+    },
+    "certifications": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::certification.certification",
+      "mappedBy": "resumee"
+    },
+    "author_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "office_location": {
+      "type": "enumeration",
+      "enum": [
+        "Spain/Barcelona",
+        "Spain/Madrid",
+        "Spain/Salamanca",
+        "United Kingdom",
+        "Andorra",
+        "France",
+        "Switzerland",
+        "Other"
+      ]
+    },
+    "professional_level": {
+      "type": "string"
+    },
+    "expertise": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::expertise.expertise",
+      "mappedBy": "resumee"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

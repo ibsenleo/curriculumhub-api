@@ -1,8 +1,8 @@
 {
-  "name": "autorepair",
+  "name": "curriculum-hub",
   "version": "0.1.0",
   "private": true,
-  "description": "A Strapi application",
+  "description": "A modern and stylish curriculum repository",
   "scripts": {
     "build": "strapi build",
     "deploy": "strapi deploy",

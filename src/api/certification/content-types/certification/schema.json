@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "certifications",
+  "info": {
+    "singularName": "certification",
+    "pluralName": "certifications",
+    "displayName": "Certification"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "authority": {
+      "type": "string"
+    },
+    "issue_date": {
+      "type": "date"
+    },
+    "expiration_date": {
+      "type": "date"
+    },
+    "resumee": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::resumee.resumee",
+      "inversedBy": "certifications"
+    }
+  }
+}
