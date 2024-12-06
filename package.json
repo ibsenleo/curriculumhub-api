@@ -15,19 +15,19 @@
     "@strapi/plugin-cloud": "5.4.2",
     "@strapi/plugin-users-permissions": "5.4.2",
     "@strapi/strapi": "5.4.2",
-    "fs-extra": "^10.0.0",
-    "mime-types": "^2.1.27",
+    "fs-extra": "^10.1.0",
+    "mime-types": "^2.1.35",
     "pg": "8.8.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-router-dom": "^6.0.0",
-    "styled-components": "^6.0.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0",
+    "styled-components": "^6.1.13"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "typescript": "^5"
+    "@types/node": "^20.17.9",
+    "@types/react": "^18.3.14",
+    "@types/react-dom": "^18.3.2",
+    "typescript": "^5.7.2"
   },
   "engines": {
     "node": ">=18.0.0 <=22.x.x",
