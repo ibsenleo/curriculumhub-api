@@ -15,6 +15,7 @@
     "@strapi/plugin-cloud": "5.4.2",
     "@strapi/plugin-users-permissions": "5.4.2",
     "@strapi/strapi": "5.4.2",
+    "@strapi/types": "^5.5.0",
     "fs-extra": "^10.1.0",
     "mime-types": "^2.1.35",
     "pg": "8.8.0",

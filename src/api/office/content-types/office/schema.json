@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "offices",
+  "info": {
+    "singularName": "office",
+    "pluralName": "offices",
+    "displayName": "Office",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "country": {
+      "type": "string",
+      "maxLength": 2,
+      "required": true
+    },
+    "resumees": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::resumee.resumee",
+      "mappedBy": "office"
+    }
+  }
+}

@@ -8,7 +8,7 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -20,6 +20,12 @@
       "max": 10,
       "min": 0,
       "required": true
+    },
+    "resumee": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::resumee.resumee",
+      "inversedBy": "skills"
     }
   }
 }

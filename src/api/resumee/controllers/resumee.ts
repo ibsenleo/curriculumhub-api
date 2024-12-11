@@ -129,5 +129,86 @@ export default factories.createCoreController('api::resumee.resumee', ({ strapi 
         return response;
 
     },
+
+    async delete(ctx) {
+
+        const { id } = ctx.params;
+
+        try {
+
+            // Verificar el tipo de ID
+            if (!id) {
+                return ctx.badRequest('No ID provided');
+            }
+
+            // Intentar convertir a número si es necesario
+            const parsedId = typeof id === 'string' ? parseInt(id, 10) : id;
+
+            // Obtener el resumee con sus relaciones
+            const resumee = await strapi.db.query('api::resumee.resumee').findOne({
+                where: { id: parsedId },
+                populate: {
+                    experiences: true,
+                    skills: true,
+                    certifications: true,
+                    educations: true
+                }
+            });
+
+            if (!resumee) {
+                return ctx.notFound(`Resumee with id ${id} not found`);
+            }
+
+            // Función de eliminación en cascada para entidades relacionadas
+            const deleteRelatedEntities = async (entities, contentType) => {
+                if (entities && entities.length > 0) {
+                    await Promise.all(
+                        entities.map(async (entity) => {
+                            // Eliminar el draft si existe
+                            await strapi.db.query(contentType).delete({
+                                where: {
+                                    id: entity.id,
+                                    publishedAt: null // Solo elimina drafts
+                                }
+                            });
+
+                            // Eliminar la entidad publicada
+                            await strapi.db.query(contentType).delete({
+                                where: { id: entity.id }
+                            });
+                        })
+                    );
+                }
+            };
+
+            // Eliminar entidades relacionadas
+            await deleteRelatedEntities(resumee.experiences, 'api::experience.experience');
+            await deleteRelatedEntities(resumee.skills, 'api::skill.skill');
+            await deleteRelatedEntities(resumee.certifications, 'api::certification.certification');
+            await deleteRelatedEntities(resumee.educations, 'api::education.education');
+            await deleteRelatedEntities(resumee.expertise, 'api::expertise.expertise');
+
+            // Eliminar draft del resumee si existe
+            if (resumee.draftRelated) {
+                await strapi.db.query('api::resumee.resumee').delete({
+                    where: {
+                        id: resumee.draftRelated.id,
+                        publishedAt: null
+                    }
+                });
+                console.log('Resumee draft deleted:', resumee.draftRelated.id);
+            }
+
+            // Eliminar el resumee principal
+            const deletedResumee = await strapi.db.query('api::resumee.resumee').delete({
+                where: { id }
+            });
+
+            // Devolver respuesta
+            ctx.body = deletedResumee;
+        } catch (error) {
+            ctx.throw(500, error);
+        }
+    }
 })
 )

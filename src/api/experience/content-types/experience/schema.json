@@ -7,7 +7,7 @@
     "displayName": "Experience"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {

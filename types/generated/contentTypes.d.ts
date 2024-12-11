@@ -407,7 +407,7 @@ export interface ApiCertificationCertification
     singularName: 'certification';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     authority: Schema.Attribute.String;
@@ -440,7 +440,7 @@ export interface ApiEducationEducation extends Struct.CollectionTypeSchema {
     singularName: 'education';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -473,7 +473,7 @@ export interface ApiExperienceExperience extends Struct.CollectionTypeSchema {
     singularName: 'experience';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     company_name: Schema.Attribute.String;
@@ -508,7 +508,7 @@ export interface ApiExpertiseItemExpertiseItem
     singularName: 'expertise-item';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -544,7 +544,7 @@ export interface ApiExpertiseExpertise extends Struct.CollectionTypeSchema {
     singularName: 'expertise';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -603,6 +603,41 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiOfficeOffice extends Struct.CollectionTypeSchema {
+  collectionName: 'offices';
+  info: {
+    description: '';
+    displayName: 'Office';
+    pluralName: 'offices';
+    singularName: 'office';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    country: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 2;
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::office.office'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    resumees: Schema.Attribute.Relation<'oneToMany', 'api::resumee.resumee'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiResumeeResumee extends Struct.CollectionTypeSchema {
   collectionName: 'resumees';
   info: {
@@ -612,7 +647,7 @@ export interface ApiResumeeResumee extends Struct.CollectionTypeSchema {
     singularName: 'resumee';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -648,20 +683,10 @@ export interface ApiResumeeResumee extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     modification_date: Schema.Attribute.Date;
-    office_location: Schema.Attribute.Enumeration<
-      [
-        'Spain/Barcelona',
-        'Spain/Madrid',
-        'Spain/Salamanca',
-        'United Kingdom',
-        'Andorra',
-        'France',
-        'Switzerland',
-        'Other',
-      ]
-    >;
+    office: Schema.Attribute.Relation<'manyToOne', 'api::office.office'>;
     professional_level: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    skills: Schema.Attribute.Relation<'oneToMany', 'api::skill.skill'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -678,7 +703,7 @@ export interface ApiSkillSkill extends Struct.CollectionTypeSchema {
     singularName: 'skill';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
@@ -698,6 +723,7 @@ export interface ApiSkillSkill extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    resumee: Schema.Attribute.Relation<'manyToOne', 'api::resumee.resumee'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1223,6 +1249,7 @@ declare module '@strapi/strapi' {
       'api::expertise-item.expertise-item': ApiExpertiseItemExpertiseItem;
       'api::expertise.expertise': ApiExpertiseExpertise;
       'api::global.global': ApiGlobalGlobal;
+      'api::office.office': ApiOfficeOffice;
       'api::resumee.resumee': ApiResumeeResumee;
       'api::skill.skill': ApiSkillSkill;
       'plugin::content-releases.release': PluginContentReleasesRelease;

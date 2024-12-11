@@ -8,7 +8,7 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -54,19 +54,6 @@
         "files"
       ]
     },
-    "office_location": {
-      "type": "enumeration",
-      "enum": [
-        "Spain/Barcelona",
-        "Spain/Madrid",
-        "Spain/Salamanca",
-        "United Kingdom",
-        "Andorra",
-        "France",
-        "Switzerland",
-        "Other"
-      ]
-    },
     "professional_level": {
       "type": "string"
     },
@@ -79,6 +66,18 @@
     "active": {
       "type": "boolean",
       "default": true
+    },
+    "office": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::office.office",
+      "inversedBy": "resumees"
+    },
+    "skills": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::skill.skill",
+      "mappedBy": "resumee"
     }
   }
 }
