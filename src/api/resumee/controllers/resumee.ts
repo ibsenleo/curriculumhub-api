@@ -104,7 +104,14 @@ export default factories.createCoreController('api::resumee.resumee', ({ strapi 
             );
         }
 
-        return newResumee;
+        // return newResumee;
+
+        const populatedResumee = await strapi.db.query('api::resumee.resumee').findOne({
+            where: { id: newResumee.id },
+            populate: ['author', 'educations', 'experiences', 'skills', 'certifications', 'expertise.expertise_items'],
+        });
+
+        return populatedResumee;
     },
 
     async find(ctx) {
@@ -151,7 +158,12 @@ export default factories.createCoreController('api::resumee.resumee', ({ strapi 
                     experiences: true,
                     skills: true,
                     certifications: true,
-                    educations: true
+                    educations: true,
+                    expertise: {
+                        populate: {
+                            expertise_items: true
+                        }
+                    }
                 }
             });
 
@@ -160,19 +172,21 @@ export default factories.createCoreController('api::resumee.resumee', ({ strapi 
             }
 
             // Función de eliminación en cascada para entidades relacionadas
-            const deleteRelatedEntities = async (entities, contentType) => {
+            const deleteRelatedEntities = async (entities, contentType, nestedRelations = {}) => {
                 if (entities && entities.length > 0) {
                     await Promise.all(
                         entities.map(async (entity) => {
-                            // Eliminar el draft si existe
-                            await strapi.db.query(contentType).delete({
-                                where: {
-                                    id: entity.id,
-                                    publishedAt: null // Solo elimina drafts
+
+                            // Manejo de relaciones anidadas (e.g., expertise_items en expertise)
+                            for (const [relationKey, relationContentType] of Object.entries(nestedRelations)) {
+                                if (entity[relationKey] && entity[relationKey].length > 0) {
+                                    console.log(`Deleting nested relation: ${relationContentType}`);
+                                    await deleteRelatedEntities(entity[relationKey], relationContentType);
                                 }
-                            });
+                            }
 
                             // Eliminar la entidad publicada
+                            console.log(`Deleting ${contentType}`)
                             await strapi.db.query(contentType).delete({
                                 where: { id: entity.id }
                             });
@@ -186,7 +200,9 @@ export default factories.createCoreController('api::resumee.resumee', ({ strapi 
             await deleteRelatedEntities(resumee.skills, 'api::skill.skill');
             await deleteRelatedEntities(resumee.certifications, 'api::certification.certification');
             await deleteRelatedEntities(resumee.educations, 'api::education.education');
-            await deleteRelatedEntities(resumee.expertise, 'api::expertise.expertise');
+            await deleteRelatedEntities(resumee.expertise, 'api::expertise.expertise', {
+                expertise_items: 'api::expertise-item.expertise-item'
+            });
 
             // Eliminar draft del resumee si existe
             if (resumee.draftRelated) {

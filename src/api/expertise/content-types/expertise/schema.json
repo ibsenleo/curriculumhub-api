@@ -31,7 +31,8 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::expertise-item.expertise-item",
-      "mappedBy": "expertise"
+      "mappedBy": "expertise",
+      "cascade": true
     }
   }
 }
